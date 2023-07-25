@@ -47,13 +47,23 @@ jobs:
         run: |
           gcloud info
 
+      - name: Login to GAR
+        uses: docker/login-action@v2
+        with:
+          registry: me-west1-docker.pkg.dev
+          username: _json_key
+          password: ${{ secrets.CREDENTIALS_JSON }}
+
       - name: push Docker images to Artifact Registry
         run: |
           docker push me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/api:latest
           docker push me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/web-app:latest
 
-      - name: Fetch cluster endpoint and auth data
-        run: gcloud container clusters get-credentials words-gke-autopilot-cluster --region me-west1
+      - id: 'get-credentials'
+        uses: google-github-actions/get-gke-credentials@v1
+        with:
+          cluster_name: 'words-gke-autopilot-cluster'
+          location: 'me-west1'
 
       - name: Deploy API and Web App to GKE
         working-directory: ./k8s-manifests/
