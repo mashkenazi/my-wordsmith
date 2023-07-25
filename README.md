@@ -12,6 +12,11 @@ The demo app runs across three containers:
 
 ![Architecture diagram](architecture.excalidraw.png)
 
+## Build and deploy to Google Cloud Platform
+
+Go to Actions and run Deploy to GCP :)
+
+
 ## Build and run in Docker Compose
 
 The only requirement to build and run the app from source is Docker. Clone this repo and use Docker Compose to build all the images. You can use the new V2 Compose with `docker compose` or the classic `docker-compose` CLI:
