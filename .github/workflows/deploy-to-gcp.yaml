@@ -55,7 +55,14 @@ jobs:
           docker push me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/api:latest
           docker push me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/web-app:latest
 
+      - name: Set up Cloud SQL Proxy
+        run: |
+          wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy 
+          chmod +x cloud_sql_proxy
+          ./cloud_sql_proxy -instances=akiva-ashkenazi:me-west1:words-postgresql-instance=tcp:5432 &
+
       - id: 'get-credentials'
+        name: Get GKE Credentials
         uses: google-github-actions/get-gke-credentials@v1
         with:
           cluster_name: 'words-gke-autopilot-cluster'
