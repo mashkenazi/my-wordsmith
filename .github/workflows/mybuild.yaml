@@ -25,18 +25,22 @@ jobs:
         with:
           credentials_json: ${{ secrets.CREDENTIALS_JSON }}
 
-      - name: Build API Docker images
+      - name: Build API Docker image
         run: |
-          docker build -t api:latest ./api
-          docker build -t web-app:latest ./web
-          docker images
+          docker build -t api:latest
+        working-directory: ./api/
+
+      - name: Build Web App Docker image
+        run: |  
+          docker build -t web-app:latest
+        working-directory: ./web/
 
       - name: Tag and push Docker images to Artifact Registry
         run: |
-          docker tag api:latest me-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/docker-repo/api:latest
-          docker tag web-app:latest me-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/docker-repo/web-app:latest
-          docker push me-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/docker-repo/api:latest
-          docker push me-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/docker-repo/web-app:latest
+          docker tag api:latest me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/api:latest
+          docker tag web-app:latest me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/web-app:latest
+          docker push me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/api:latest
+          docker push me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/web-app:latest
 
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.3.0
