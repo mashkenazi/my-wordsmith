@@ -30,7 +30,8 @@ spec:
     spec:
       containers:
         - name: web
-          image: dockersamples/wordsmith-web
+#          image: dockersamples/wordsmith-web
+          image: me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/web-app:latest
           ports:
             - containerPort: 80
               name: web

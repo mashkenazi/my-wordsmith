@@ -11,7 +11,8 @@ spec:
       name: api
   selector:
     app: api
-  clusterIP: None
+#  clusterIP: None
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -20,7 +21,7 @@ metadata:
   labels:
     app: api
 spec:
-  replicas: 5
+#  replicas: 5
   selector:
     matchLabels:
       app: api
@@ -31,7 +32,15 @@ spec:
     spec:
       containers:
         - name: api
-          image: dockersamples/wordsmith-api
+#          image: dockersamples/wordsmith-api
+          image: me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/api:latest
           ports:
             - containerPort: 8080
               name: api
+          resources:
+            requests:
+              cpu: "100m"     # Set realistic resource requests
+              memory: "128Mi"
+            limits:
+              cpu: "500m"     # Set realistic resource limits
+              memory: "512Mi"
