@@ -19,7 +19,7 @@ public class Main {
         server.createContext("/adjective", handler(() -> randomWord("adjectives")));
         server.start();
     }
-    public static String conn = "jdbc:postgresql://127.0.0.1:5432/postgres?user=postgres&password=pass";
+    public static String conn = "jdbc:postgresql://127.0.0.1:5432";
     private static String randomWord(String table) {
         try (Connection connection = DriverManager.getConnection(conn)) {
             try (Statement statement = connection.createStatement()) {

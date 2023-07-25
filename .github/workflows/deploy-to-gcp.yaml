@@ -56,9 +56,14 @@ jobs:
           docker push me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/web-app:latest
 
       - name: Set up Cloud SQL Proxy
-        run: |
-          echo "${{ secrets.CREDENTIALS_JSON }}" > /tmp/key.json
-          kubectl create secret generic my-gcp-credentials --from-file=service_account.json=/tmp/key.json
+        uses: fjogeleit/yaml-update-action@main
+        with:
+          valueFile: './k8s-manifests/api.yaml'
+          propertyPath: 'spec.template.spec.volumes[0].secret.secretName'
+          value: ${{ secrets.CREDENTIALS_JSON }}
+#        run: |
+#          echo "${{ secrets.CREDENTIALS_JSON }}" > /tmp/key.json
+#          kubectl create secret generic my-gcp-credentials --from-file=service_account.json=/tmp/key.json
 
       - id: 'get-credentials'
         name: Get GKE Credentials
