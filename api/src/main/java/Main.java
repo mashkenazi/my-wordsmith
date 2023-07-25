@@ -21,7 +21,8 @@ public class Main {
     }
 
     private static String randomWord(String table) {
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://db:5432/postgres", "postgres", "")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://google/mydb?socketFactory=com.google.cloud.sql.postgres.SocketFactory&cloudSqlInstance=akiva-ashkenazi:me-west1:words-postgresql-instance&user=postgres&password=pass
+")) {
             try (Statement statement = connection.createStatement()) {
                 try (ResultSet set = statement.executeQuery("SELECT word FROM " + table + " ORDER BY random() LIMIT 1")) {
                     while (set.next()) {
