@@ -40,13 +40,12 @@ jobs:
           docker tag api:latest me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/api:latest
           docker tag web-app:latest me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/web-app:latest
 
-      - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0.3.0
-        with:
-          version: '340.0.0'
-        env:
-          APPLICATION_CREDENTIALS: ${{ secrets.CREDENTIALS_JSON }}
-          CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE: ${{ secrets.CREDENTIALS_JSON }}
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Use gcloud CLI
+        run: |
+          gcloud info
 
       - name: push Docker images to Artifact Registry
         run: |
