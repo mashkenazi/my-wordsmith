@@ -27,12 +27,12 @@ jobs:
 
       - name: Build API Docker image
         run: |
-          docker build -t api:latest
+          docker build -t api:latest .
         working-directory: ./api/
 
       - name: Build Web App Docker image
         run: |  
-          docker build -t web-app:latest
+          docker build -t web-app:latest .
         working-directory: ./web/
 
       - name: Tag and push Docker images to Artifact Registry
