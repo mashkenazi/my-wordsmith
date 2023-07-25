@@ -35,10 +35,13 @@ jobs:
           docker build -t web-app:latest .
         working-directory: ./web/
 
-      - name: Tag and push Docker images to Artifact Registry
+      - name: Tag Docker images
         run: |
           docker tag api:latest me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/api:latest
           docker tag web-app:latest me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/web-app:latest
+
+      - name: push Docker images to Artifact Registry
+        run: |
           docker push me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/api:latest
           docker push me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/web-app:latest
 
