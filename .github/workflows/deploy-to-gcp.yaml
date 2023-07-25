@@ -57,9 +57,8 @@ jobs:
 
       - name: Set up Cloud SQL Proxy
         run: |
-          wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy 
-          chmod +x cloud_sql_proxy
-          ./cloud_sql_proxy -instances=akiva-ashkenazi:me-west1:words-postgresql-instance=tcp:5432 &
+          echo "${{ secrets.CREDENTIALS_JSON }}" > /tmp/key.json
+          kubectl create secret generic my-gcp-credentials --from-file=service_account.json=/tmp/key.json
 
       - id: 'get-credentials'
         name: Get GKE Credentials
