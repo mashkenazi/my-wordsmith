@@ -1,0 +1,61 @@
+name: Deploy to GCP
+
+on:
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: akiva-ashkenazi
+  REGION: me-west1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - id: 'auth'
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.CREDENTIALS_JSON }}
+
+      - name: Build API Docker images
+        run: |
+          docker build -t api:latest ./api
+          docker build -t web-app:latest ./web
+          docker images
+
+      - name: Tag and push Docker images to Artifact Registry
+        run: |
+          docker tag api:latest me-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/docker-repo/api:latest
+          docker tag web-app:latest me-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/docker-repo/web-app:latest
+          docker push me-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/docker-repo/api:latest
+          docker push me-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/docker-repo/web-app:latest
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.3.0
+        with:
+          version: '340.0.0'
+        env:
+          APPLICATION_CREDENTIALS: ${{ secrets.CREDENTIALS_JSON }}
+          CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE: ${{ secrets.CREDENTIALS_JSON }}
+
+      - name: Fetch cluster endpoint and auth data
+        run: gcloud container clusters get-credentials words-gke-autopilot-cluster --region me-west1
+
+      - name: Deploy API and Web App to GKE
+        working-directory: ./k8s-manifests/
+        run: |
+          kubectl apply -f api.yaml
+          kubectl apply -f web.yaml
+
+      - name: Expose application using Ingress controller
+        working-directory: ./k8s-manifests/
+        run: kubectl apply -f ingress.yaml
+
