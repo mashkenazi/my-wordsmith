@@ -3,10 +3,6 @@ name: Deploy to GCP
 on:
   workflow_dispatch:
 
-env:
-  PROJECT_ID: akiva-ashkenazi
-  REGION: me-west1
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
