@@ -40,11 +40,6 @@ jobs:
           docker tag api:latest me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/api:latest
           docker tag web-app:latest me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/web-app:latest
 
-      - name: push Docker images to Artifact Registry
-        run: |
-          docker push me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/api:latest
-          docker push me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/web-app:latest
-
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.3.0
         with:
@@ -52,6 +47,11 @@ jobs:
         env:
           APPLICATION_CREDENTIALS: ${{ secrets.CREDENTIALS_JSON }}
           CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE: ${{ secrets.CREDENTIALS_JSON }}
+
+      - name: push Docker images to Artifact Registry
+        run: |
+          docker push me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/api:latest
+          docker push me-west1-docker.pkg.dev/akiva-ashkenazi/docker-repo/web-app:latest
 
       - name: Fetch cluster endpoint and auth data
         run: gcloud container clusters get-credentials words-gke-autopilot-cluster --region me-west1
