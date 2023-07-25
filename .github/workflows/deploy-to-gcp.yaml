@@ -62,11 +62,6 @@ jobs:
           cluster_name: 'words-gke-autopilot-cluster'
           location: 'me-west1'
 
-      - name: Set up Cloud SQL Proxy
-        run: |
-          echo "${{ secrets.CREDENTIALS_JSON }}" > ./tmp-key.json
-          kubectl create secret generic my-gcp-credentials --from-file=service_account.json=./tmp-key.json
-
       - name: Deploy API and Web App to GKE
         working-directory: ./k8s-manifests/
         run: |
