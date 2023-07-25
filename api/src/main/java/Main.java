@@ -10,7 +10,7 @@ import java.sql.*;
 import java.util.NoSuchElementException;
 
 public class Global {
-    public static String conn = "jdbc:postgresql://google/mydb?socketFactory=com.google.cloud.sql.postgres.SocketFactory&cloudSqlInstance=akiva-ashkenazi:me-west1:words-postgresql-instance&user=postgres&password=pass"
+    public static String conn = "jdbc:postgresql://google/mydb?socketFactory=com.google.cloud.sql.postgres.SocketFactory&cloudSqlInstance=akiva-ashkenazi:me-west1:words-postgresql-instance&user=postgres&password=pass";
 }
 
 public class Main {
