@@ -2,21 +2,22 @@ name: Build API
 # template source: https://github.com/dockersamples/.github/blob/main/templates/call-docker-build.yaml
 
 on:
+  workflow_dispatch:
   # we want pull requests so we can build(test) but not push to image registry
-  push:
-    branches:
-      - 'main'
-    # only build when important files change
-    paths:
-      - 'api/**'
-      - '.github/workflows/call-docker-build-api.yaml'
-  pull_request:
-    branches:
-      - 'main'
-    # only build when important files change
-    paths:
-      - 'api/**'
-      - '.github/workflows/call-docker-build-api.yaml'
+#  push:
+#    branches:
+#      - 'main'
+#    # only build when important files change
+#    paths:
+#      - 'api/**'
+#      - '.github/workflows/call-docker-build-api.yaml'
+#  pull_request:
+#    branches:
+#      - 'main'
+#    # only build when important files change
+#    paths:
+#      - 'api/**'
+#      - '.github/workflows/call-docker-build-api.yaml'
 
 jobs:
   call-docker-build:
